@@ -4,13 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.sistemas_op_umg2025.model.RoleUser;
-import com.proyecto.sistemas_op_umg2025.model.auth.LoginRequest;
 import com.proyecto.sistemas_op_umg2025.model.auth.RegisterRequest;
-import com.proyecto.sistemas_op_umg2025.model.entity.BaseResponse;
 import com.proyecto.sistemas_op_umg2025.model.entity.User;
 import com.proyecto.sistemas_op_umg2025.model.repository.UserRepository;
 
