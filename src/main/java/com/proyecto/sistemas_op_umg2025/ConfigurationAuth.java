@@ -18,7 +18,8 @@ public class ConfigurationAuth {
     @Bean
     CommandLineRunner init() {
         return args -> {
-            try {
+            /* 
+              try {
                 service.getFindUncle("admin");
             } catch (Exception e) {
                 service.registerAdmin(RegisterRequest.builder()
@@ -30,6 +31,8 @@ public class ConfigurationAuth {
                         .email("admin@gmail.com")
                         .build());
             }
+            */
+           
         };
     }
        
