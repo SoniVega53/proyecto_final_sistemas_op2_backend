@@ -61,22 +61,20 @@ public class UserService implements ServiceCRUD<User> {
     }
 
     public User updateUser(RegisterRequest request, User userFind) {
-        User userFin = repository.findByUsername(request.getUsername()).orElseThrow();
-        if (userFin == null)
-            return null;
 
         User user = User.builder()
                 .id(userFind.getId())
-                .rol(userFin.getRol())
+                .username(userFind.getUsername())
+                .password(userFind.getPassword())
                 .email(request.getEmail())
+                .rol(userFind.getRol())
                 .build();
-        user = repository.save(user);
         if (user == null)
             return null;
 
         if (RoleUser.valueOf(request.getRol()) == RoleUser.DOCTOR) {
             Doctor doctor = Doctor.builder()
-                    .id(userFin.getDoctor().getId())
+                    .id(request.getId_doctor())
                     .name(request.getName())
                     .lastname(request.getLastname())
                     .specialty(request.getSpecialty())
@@ -85,7 +83,7 @@ public class UserService implements ServiceCRUD<User> {
             repositoryDoc.save(doctor);
         } else if (RoleUser.valueOf(request.getRol()) == RoleUser.USER) {
             Patient pat = Patient.builder()
-                    .id(userFin.getPaciente().getId())
+                    .id(request.getId_paciente())
                     .name(request.getName())
                     .lastname(request.getLastname())
                     .phone(request.getPhone())
@@ -144,7 +142,7 @@ public class UserService implements ServiceCRUD<User> {
 
             return user;
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
             return null;
         }
     }
@@ -161,7 +159,7 @@ public class UserService implements ServiceCRUD<User> {
 
             return repository.save(user);
         } catch (Exception e) {
-             e.printStackTrace(); 
+            e.printStackTrace();
             return null;
         }
     }

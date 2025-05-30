@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.sistemas_op_umg2025.model.auth.RegisterRequest;
 import com.proyecto.sistemas_op_umg2025.model.entity.BaseResponse;
+import com.proyecto.sistemas_op_umg2025.model.entity.Doctor;
+import com.proyecto.sistemas_op_umg2025.model.entity.Patient;
 import com.proyecto.sistemas_op_umg2025.model.entity.User;
 import com.proyecto.sistemas_op_umg2025.security.PasswordEncryptor;
+import com.proyecto.sistemas_op_umg2025.service.DoctorService;
+import com.proyecto.sistemas_op_umg2025.service.PatientService;
 import com.proyecto.sistemas_op_umg2025.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserService service;
+    private final DoctorService serviceDoc;
+    private final PatientService servicePati;
 
     @GetMapping("admin/usuario/see_all")
     public List<User> getDataList() {
@@ -55,20 +61,31 @@ public class UserController {
         }
     }
 
-    @PostMapping("usuario/update/{id}")
-    public ResponseEntity<BaseResponse> updateUsuario(@PathVariable Long id, @RequestBody RegisterRequest user) {
+    @PostMapping("usuario/update")
+    public ResponseEntity<BaseResponse> updateUsuario(@RequestBody RegisterRequest user) {
         try {
-            User find = service.getFindUncle(id);
+            User find = service.getFindUncle(user.getUsername());
+
             if (find != null) {
                 service.updateUser(user, find);
+                if (user.getId_doctor() != null) {
+                    Doctor findDoc = serviceDoc.getFindUncle(user.getId_doctor());
+                    find.setDoctor(findDoc);
+                }
+                if (user.getId_paciente() != null) {
+                    Patient findPatient = servicePati.getFindUncle(user.getId_paciente());
+                    find.setPaciente(findPatient);
+                }
+
                 return ResponseEntity.ok(BaseResponse.builder().code("200").message("Se actualizo Correctamente")
                         .entity(find).build());
             }
             return ResponseEntity.ok(
-                    BaseResponse.builder().code("400").message("Usuario no Existe o Contraseña es invalida").build());
+                    BaseResponse.builder().code("400").message("Usuario no Existe")
+                            .entity(find).build());
         } catch (Exception e) {
             return ResponseEntity.ok(
-                    BaseResponse.builder().code("400").message("Surgio Algo Inesperado").build());
+                    BaseResponse.builder().code("400").message(e.getLocalizedMessage()).entity(user).build());
         }
     }
 
@@ -91,7 +108,8 @@ public class UserController {
                                         .entity(find).build());
                     } else {
                         return ResponseEntity.ok(
-                                BaseResponse.builder().code("400").message("Contraseña no coincide con la actual").build());
+                                BaseResponse.builder().code("400").message("Contraseña no coincide con la actual")
+                                        .build());
                     }
                 }
                 return ResponseEntity.ok(

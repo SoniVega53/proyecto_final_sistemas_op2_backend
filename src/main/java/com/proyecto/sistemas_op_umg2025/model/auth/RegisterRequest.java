@@ -19,4 +19,6 @@ public class RegisterRequest {
     String rol;
     String specialty;
     String phone;
+    Long id_doctor;
+    Long id_paciente;
 }

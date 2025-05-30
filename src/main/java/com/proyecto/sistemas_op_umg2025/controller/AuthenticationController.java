@@ -49,19 +49,6 @@ public class AuthenticationController {
             User user = service.getFindUncle(request.getUsername());
 
             if (user != null) {
-                UserResponse resp = null;
-                if (user.getRol().toLowerCase() == RoleUser.DOCTOR.name().toLowerCase()) {
-                    resp = new UserResponse(user.getUsername(), user.getDoctor().getName(),
-                            user.getDoctor().getLastname(),
-                            user.getEmail(), user.getRol(), user.getDoctor().getSpecialty(), null);
-                } else if (user.getRol().toLowerCase() == RoleUser.USER.name().toLowerCase()) {
-                    resp = new UserResponse(user.getUsername(), user.getPaciente().getName(),
-                            user.getPaciente().getLastname(),
-                            user.getEmail(), user.getRol(), null, user.getPaciente().getPhone());
-                } else {
-                    resp = new UserResponse(user.getUsername(), null, null, user.getEmail(), user.getRol(), null, null);
-                }
-
                 if (checkPassword(request.getPassword(), user.getPassword())) {
                     return ResponseEntity
                             .ok(BaseResponse.builder().code("200").message("Se Inicio Sesion Correctamente")
@@ -69,7 +56,7 @@ public class AuthenticationController {
                 } else {
                     return ResponseEntity
                             .ok(BaseResponse.builder().code("400").message("Contraseña Incorrecta, Porfavor verifique.")
-                                    .entity(resp).build());
+                                    .entity(user).build());
                 }
             }
             return ResponseEntity.ok(BaseResponse.builder().code("400").message("Este Usuario No existe")
