@@ -14,6 +14,7 @@ import com.proyecto.sistemas_op_umg2025.model.entity.User;
 import com.proyecto.sistemas_op_umg2025.model.repository.DoctorRepository;
 import com.proyecto.sistemas_op_umg2025.model.repository.PatientRepository;
 import com.proyecto.sistemas_op_umg2025.model.repository.UserRepository;
+import com.proyecto.sistemas_op_umg2025.security.PasswordEncryptor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,8 +67,6 @@ public class UserService implements ServiceCRUD<User> {
 
         User user = User.builder()
                 .id(userFind.getId())
-                .username(request.getUsername())
-                .password(request.getPassword())
                 .rol(userFin.getRol())
                 .email(request.getEmail())
                 .build();
@@ -75,7 +74,7 @@ public class UserService implements ServiceCRUD<User> {
         if (user == null)
             return null;
 
-        if (request.getRol().toLowerCase() == RoleUser.DOCTOR.name().toLowerCase()) {
+        if (RoleUser.valueOf(request.getRol()) == RoleUser.DOCTOR) {
             Doctor doctor = Doctor.builder()
                     .id(userFin.getDoctor().getId())
                     .name(request.getName())
@@ -84,7 +83,7 @@ public class UserService implements ServiceCRUD<User> {
                     .user(user)
                     .build();
             repositoryDoc.save(doctor);
-        } else if (request.getRol().toLowerCase() == RoleUser.USER.name().toLowerCase()) {
+        } else if (RoleUser.valueOf(request.getRol()) == RoleUser.USER) {
             Patient pat = Patient.builder()
                     .id(userFin.getPaciente().getId())
                     .name(request.getName())
@@ -116,42 +115,54 @@ public class UserService implements ServiceCRUD<User> {
     }
 
     public User register(RegisterRequest request) {
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(request.getPassword())
-                .rol(request.getRol())
-                .email(request.getEmail())
-                .build();
-        user = repository.save(user);
-        if (request.getRol() == RoleUser.DOCTOR.name()) {
-            Doctor doctor = Doctor.builder()
-                    .name(request.getName())
-                    .lastname(request.getLastname())
-                    .specialty(request.getSpecialty())
-                    .user(user)
+        try {
+            String encrypted = PasswordEncryptor.encrypt(request.getPassword());
+            User user = User.builder()
+                    .username(request.getUsername())
+                    .password(encrypted)
+                    .rol(request.getRol())
+                    .email(request.getEmail())
                     .build();
-            repositoryDoc.save(doctor);
-        } else if (request.getRol().toLowerCase() == RoleUser.DOCTOR.name().toLowerCase()) {
-            Patient pat = Patient.builder()
-                    .name(request.getName())
-                    .lastname(request.getLastname())
-                    .phone(request.getPhone())
-                    .user(user)
-                    .build();
-            repositoryPat.save(pat);
-        }
+            user = repository.save(user);
+            if (RoleUser.valueOf(request.getRol()) == RoleUser.DOCTOR) {
+                Doctor doctor = Doctor.builder()
+                        .name(request.getName())
+                        .lastname(request.getLastname())
+                        .specialty(request.getSpecialty())
+                        .user(user)
+                        .build();
+                repositoryDoc.save(doctor);
+            } else if (RoleUser.valueOf(request.getRol()) == RoleUser.USER) {
+                Patient pat = Patient.builder()
+                        .name(request.getName())
+                        .lastname(request.getLastname())
+                        .phone(request.getPhone())
+                        .user(user)
+                        .build();
+                repositoryPat.save(pat);
+            }
 
-        return user;
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return null;
+        }
     }
 
     public User registerAdmin(RegisterRequest request) {
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(request.getPassword())
-                .rol(request.getRol())
-                .email(request.getEmail())
-                .build();
+        try {
+            String encrypted = PasswordEncryptor.encrypt(request.getPassword());
+            User user = User.builder()
+                    .username(request.getUsername())
+                    .password(encrypted)
+                    .rol(request.getRol())
+                    .email(request.getEmail())
+                    .build();
 
-        return repository.save(user);
+            return repository.save(user);
+        } catch (Exception e) {
+             e.printStackTrace(); 
+            return null;
+        }
     }
 }

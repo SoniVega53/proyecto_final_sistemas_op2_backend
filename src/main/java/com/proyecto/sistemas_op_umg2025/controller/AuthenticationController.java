@@ -13,6 +13,7 @@ import com.proyecto.sistemas_op_umg2025.model.auth.RegisterRequest;
 import com.proyecto.sistemas_op_umg2025.model.entity.BaseResponse;
 import com.proyecto.sistemas_op_umg2025.model.entity.User;
 import com.proyecto.sistemas_op_umg2025.model.entity.UserResponse;
+import com.proyecto.sistemas_op_umg2025.security.PasswordEncryptor;
 import com.proyecto.sistemas_op_umg2025.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -61,10 +62,10 @@ public class AuthenticationController {
                     resp = new UserResponse(user.getUsername(), null, null, user.getEmail(), user.getRol(), null, null);
                 }
 
-                if (user.getPassword().equals(request.getPassword())) {
+                if (checkPassword(request.getPassword(), user.getPassword())) {
                     return ResponseEntity
                             .ok(BaseResponse.builder().code("200").message("Se Inicio Sesion Correctamente")
-                                    .entity(resp).build());
+                                    .entity(user).build());
                 } else {
                     return ResponseEntity
                             .ok(BaseResponse.builder().code("400").message("Contraseña Incorrecta, Porfavor verifique.")
@@ -79,4 +80,13 @@ public class AuthenticationController {
         }
     }
 
+
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        try {
+            String decrypted = PasswordEncryptor.decrypt(encodedPassword);
+            return rawPassword.equals(decrypted);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
