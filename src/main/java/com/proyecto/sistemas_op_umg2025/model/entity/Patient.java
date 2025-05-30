@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -20,10 +23,13 @@ import lombok.NoArgsConstructor;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private String name;
-    private String lastname;
-    private String email;
-    private String phone;
+    String name;
+    String lastname;
+    String phone;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private User user;
 }

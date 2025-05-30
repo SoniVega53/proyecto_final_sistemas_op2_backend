@@ -17,4 +17,6 @@ public class RegisterRequest {
     String password;
     String passwordChange;
     String rol;
+    String specialty;
+    String phone;
 }

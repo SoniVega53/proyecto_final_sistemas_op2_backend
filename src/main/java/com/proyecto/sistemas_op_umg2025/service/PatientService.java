@@ -32,9 +32,6 @@ public class PatientService implements ServiceCRUD<Patient> {
         return repository.findById(value).orElse(null);
     }
 
-    public Patient getFindByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow();
-    }
 
     @Override
     public void deleteFind(Patient value) {

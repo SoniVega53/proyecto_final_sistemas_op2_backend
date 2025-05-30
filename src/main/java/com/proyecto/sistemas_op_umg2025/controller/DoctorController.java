@@ -63,6 +63,7 @@ public class DoctorController {
             if (find != null) {
                 // Actualiza los campos relevantes (ejemplo simple)
                 find.setName(doctor.getName());
+                find.setLastname(doctor.getLastname());
                 find.setSpecialty(doctor.getSpecialty());
                 Doctor updated = service.createOrUpdate(find);
 

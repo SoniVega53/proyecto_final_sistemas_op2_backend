@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto.sistemas_op_umg2025.model.RoleUser;
 import com.proyecto.sistemas_op_umg2025.model.auth.RegisterRequest;
+import com.proyecto.sistemas_op_umg2025.model.entity.Doctor;
+import com.proyecto.sistemas_op_umg2025.model.entity.Patient;
 import com.proyecto.sistemas_op_umg2025.model.entity.User;
+import com.proyecto.sistemas_op_umg2025.model.repository.DoctorRepository;
+import com.proyecto.sistemas_op_umg2025.model.repository.PatientRepository;
 import com.proyecto.sistemas_op_umg2025.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,10 @@ public class UserService implements ServiceCRUD<User> {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private DoctorRepository repositoryDoc;
+    @Autowired
+    private PatientRepository repositoryPat;
 
     @Override
     public User createOrUpdate(User value) {
@@ -52,33 +60,55 @@ public class UserService implements ServiceCRUD<User> {
     }
 
     public User updateUser(RegisterRequest request, User userFind) {
+        User userFin = repository.findByUsername(request.getUsername()).orElseThrow();
+        if (userFin == null)
+            return null;
+
         User user = User.builder()
                 .id(userFind.getId())
                 .username(request.getUsername())
-                .password(userFind.getPassword())
-                .name(request.getName())
-                .lastname(request.getLastname())
-                .rol(userFind.getRol())
+                .password(request.getPassword())
+                .rol(userFin.getRol())
                 .email(request.getEmail())
                 .build();
+        user = repository.save(user);
+        if (user == null)
+            return null;
+
+        if (request.getRol().toLowerCase() == RoleUser.DOCTOR.name().toLowerCase()) {
+            Doctor doctor = Doctor.builder()
+                    .id(userFin.getDoctor().getId())
+                    .name(request.getName())
+                    .lastname(request.getLastname())
+                    .specialty(request.getSpecialty())
+                    .user(user)
+                    .build();
+            repositoryDoc.save(doctor);
+        } else if (request.getRol().toLowerCase() == RoleUser.USER.name().toLowerCase()) {
+            Patient pat = Patient.builder()
+                    .id(userFin.getPaciente().getId())
+                    .name(request.getName())
+                    .lastname(request.getLastname())
+                    .phone(request.getPhone())
+                    .user(user)
+                    .build();
+            repositoryPat.save(pat);
+        }
 
         return repository.save(user);
     }
 
-    public User changePassword(RegisterRequest userFind,User find) {
+    public User changePassword(RegisterRequest userFind, User find) {
         User user = User.builder()
                 .id(find.getId())
                 .username(find.getUsername())
                 .password(userFind.getPasswordChange())
-                .name(find.getName())
-                .lastname(find.getLastname())
                 .rol(find.getRol())
                 .email(find.getEmail())
                 .build();
 
         return repository.save(user);
     }
-
 
     public User obtenerUser(String usuario) {
         User user = repository.findByUsername(usuario).orElseThrow();
@@ -89,21 +119,35 @@ public class UserService implements ServiceCRUD<User> {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
-                .name(request.getName())
-                .lastname(request.getLastname())
-                .rol(RoleUser.USER.name())
+                .rol(request.getRol())
                 .email(request.getEmail())
                 .build();
+        user = repository.save(user);
+        if (request.getRol() == RoleUser.DOCTOR.name()) {
+            Doctor doctor = Doctor.builder()
+                    .name(request.getName())
+                    .lastname(request.getLastname())
+                    .specialty(request.getSpecialty())
+                    .user(user)
+                    .build();
+            repositoryDoc.save(doctor);
+        } else if (request.getRol().toLowerCase() == RoleUser.DOCTOR.name().toLowerCase()) {
+            Patient pat = Patient.builder()
+                    .name(request.getName())
+                    .lastname(request.getLastname())
+                    .phone(request.getPhone())
+                    .user(user)
+                    .build();
+            repositoryPat.save(pat);
+        }
 
-        return repository.save(user);
+        return user;
     }
 
     public User registerAdmin(RegisterRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
-                .name(request.getName())
-                .lastname(request.getLastname())
                 .rol(request.getRol())
                 .email(request.getEmail())
                 .build();

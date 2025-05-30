@@ -62,7 +62,6 @@ public class PatientController {
             if (find != null) {
                 find.setName(patient.getName());
                 find.setLastname(patient.getLastname());
-                find.setEmail(patient.getEmail());
                 find.setPhone(patient.getPhone());
                 Patient updated = service.createOrUpdate(find);
 
