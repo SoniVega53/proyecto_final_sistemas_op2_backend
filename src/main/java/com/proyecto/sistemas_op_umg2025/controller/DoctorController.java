@@ -27,7 +27,7 @@ public class DoctorController {
 
     private final DoctorService service;
 
-    @GetMapping("admin/doctors/see")
+    @GetMapping("doctors/see")
     public List<Doctor> getDataList() {
         return service.getDataList();
     }

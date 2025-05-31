@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class AppointmentRequest {
     private Long doctorId;
     private Long patientId;
-    private LocalDateTime date;
-
-    // getters y setters
+    private String date;
 }
 

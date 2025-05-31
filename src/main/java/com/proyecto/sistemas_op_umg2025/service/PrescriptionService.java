@@ -36,6 +36,10 @@ public class PrescriptionService implements ServiceCRUD<Prescription> {
         return repository.findByAppointmentId(appointmentId);
     }
 
+    public List<Prescription> getPrescriptionsByDoctor(Long doctorId) {
+        return repository.findByAppointmentDoctorId(doctorId);
+    }
+
     @Override
     public void deleteFind(Prescription value) {
         repository.delete(value);

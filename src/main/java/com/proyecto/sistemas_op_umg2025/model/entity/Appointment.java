@@ -33,5 +33,5 @@ public class Appointment {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    private LocalDateTime date;
+    private String date;
 }

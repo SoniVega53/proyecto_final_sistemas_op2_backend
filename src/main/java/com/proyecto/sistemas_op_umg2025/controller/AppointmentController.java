@@ -30,12 +30,22 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentController {
 
     private final AppointmentService service;
-    private final DoctorService doctorService;   // Para buscar doctor
-    private final PatientService patientService; // Para buscar paciente
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
-    @GetMapping("admin/appointments/see")
+    @GetMapping("appointments/see")
     public List<Appointment> getDataList() {
         return service.getDataList();
+    }
+
+    @GetMapping("appointments/see/doctor/{id_doc}")
+    public List<Appointment> getDataListDoctor(@PathVariable Long id_doc) {
+        return service.getByDoctorId(id_doc);
+    }
+
+    @GetMapping("appointments/see/paciente/{id_pac}")
+    public List<Appointment> getDataListPaciente(@PathVariable Long id_pac) {
+        return service.getByPatientId(id_pac);
     }
 
     @DeleteMapping("appointment/eliminar/{id}")
@@ -63,7 +73,8 @@ public class AppointmentController {
     }
 
     @PostMapping("appointment/update/{id}")
-    public ResponseEntity<BaseResponse> updateAppointment(@PathVariable Long id, @RequestBody AppointmentRequest request) {
+    public ResponseEntity<BaseResponse> updateAppointment(@PathVariable Long id,
+            @RequestBody AppointmentRequest request) {
         try {
             Appointment find = service.getFindUncle(id);
             if (find == null) {

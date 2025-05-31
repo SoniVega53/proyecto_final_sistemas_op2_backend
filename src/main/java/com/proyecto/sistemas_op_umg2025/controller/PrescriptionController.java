@@ -21,7 +21,6 @@ import com.proyecto.sistemas_op_umg2025.service.PrescriptionService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/proyecto/")
@@ -31,9 +30,19 @@ public class PrescriptionController {
     private final PrescriptionService service;
     private final AppointmentService appointmentService;
 
-    @GetMapping("admin/prescriptions/see")
+    @GetMapping("prescriptions/see")
     public List<Prescription> getDataList() {
         return service.getDataList();
+    }
+    @GetMapping("prescriptions/see/{appointmentId}")
+    public List<Prescription> getDataList(@PathVariable Long appointmentId) {
+        return service.getByAppointmentId(appointmentId);
+    }
+
+    @GetMapping("doctor/{doctorId}/prescriptions")
+    public ResponseEntity<List<Prescription>> getPrescriptionsByDoctor(@PathVariable Long doctorId) {
+        List<Prescription> prescriptions = service.getPrescriptionsByDoctor(doctorId);
+        return ResponseEntity.ok(prescriptions);
     }
 
     @DeleteMapping("prescription/eliminar/{id}")
@@ -61,7 +70,8 @@ public class PrescriptionController {
     }
 
     @PostMapping("prescription/update/{id}")
-    public ResponseEntity<BaseResponse> updatePrescription(@PathVariable Long id, @RequestBody PrescriptionRequest request) {
+    public ResponseEntity<BaseResponse> updatePrescription(@PathVariable Long id,
+            @RequestBody PrescriptionRequest request) {
         try {
             Prescription find = service.getFindUncle(id);
             if (find == null) {
@@ -131,4 +141,3 @@ public class PrescriptionController {
         }
     }
 }
-
