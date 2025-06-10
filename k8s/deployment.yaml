@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: springboot-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: springboot
@@ -14,19 +14,6 @@ spec:
     spec:
       containers:
       - name: springboot
-        image: gcr.io/cluster-proyecto-op2/springboot-app
+        image: gcr.io/cluster-proyecto-op2/springboot-app:latest
         ports:
-        - containerPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: springboot-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: springboot
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
+        - containerPort: 9090
