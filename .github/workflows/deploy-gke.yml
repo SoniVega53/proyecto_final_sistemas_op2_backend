@@ -25,6 +25,9 @@ jobs:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
+      - name: Decode GCP credentials
+        run: echo "${{ secrets.GKE_SA_KEY }}" | base64 -d > "${{ github.workspace }}/key.json"
+
       - name: Authenticate Docker with GCR
         run: gcloud auth configure-docker
 
