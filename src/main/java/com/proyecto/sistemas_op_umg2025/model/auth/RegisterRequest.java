@@ -17,4 +17,8 @@ public class RegisterRequest {
     String password;
     String passwordChange;
     String rol;
+    String specialty;
+    String phone;
+    Long id_doctor;
+    Long id_paciente;
 }
