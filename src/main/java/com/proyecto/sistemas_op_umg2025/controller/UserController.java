@@ -37,7 +37,7 @@ public class UserController {
     private final DoctorService serviceDoc;
     private final PatientService servicePati;
 
-    @GetMapping("admin/usuario/see2")
+    @GetMapping("admin/usuario/see_all")
     public List<User> getDataList() {
         return service.getDataList();
     }
