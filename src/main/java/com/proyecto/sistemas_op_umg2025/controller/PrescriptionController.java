@@ -22,7 +22,7 @@ import com.proyecto.sistemas_op_umg2025.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/proyecto/")
 @RequiredArgsConstructor
 public class PrescriptionController {

@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/proyecto/auth")
 @SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final UserService service;
