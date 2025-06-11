@@ -9,7 +9,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   DEPLOYMENT_NAME: springboot-deployment
-  IMAGE: us-docker.pkg.dev/${{ secrets.GKE_PROJECT }}/docker-repo/springboot-app
+  IMAGE: us-docker.pkg.dev/${{ secrets.GKE_PROJECT }}/springboot-app
 
 jobs:
   setup-build-publish-deploy:
