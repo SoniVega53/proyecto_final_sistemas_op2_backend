@@ -1,18 +1,14 @@
 package com.proyecto.sistemas_op_umg2025.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.proyecto.sistemas_op_umg2025.model.RoleUser;
 import com.proyecto.sistemas_op_umg2025.model.auth.LoginRequest;
 import com.proyecto.sistemas_op_umg2025.model.auth.RegisterRequest;
 import com.proyecto.sistemas_op_umg2025.model.entity.BaseResponse;
 import com.proyecto.sistemas_op_umg2025.model.entity.User;
-import com.proyecto.sistemas_op_umg2025.model.entity.UserResponse;
 import com.proyecto.sistemas_op_umg2025.security.PasswordEncryptor;
 import com.proyecto.sistemas_op_umg2025.service.UserService;
 
@@ -22,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/proyecto/auth")
 @SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final UserService service;

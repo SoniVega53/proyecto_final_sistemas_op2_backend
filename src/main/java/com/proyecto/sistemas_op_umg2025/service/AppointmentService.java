@@ -3,6 +3,7 @@ package com.proyecto.sistemas_op_umg2025.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.sistemas_op_umg2025.model.entity.Appointment;
@@ -32,12 +33,14 @@ public class AppointmentService implements ServiceCRUD<Appointment> {
         return repository.findById(value).orElse(null);
     }
 
-    public List<Appointment> getByDoctorId(Long doctorId) {
-        return repository.findByDoctorId(doctorId);
+    //@Cacheable(value = "appointmentsByDoctor", key = "#id_doc")
+    public List<Appointment> getByDoctorId(Long id_doc) {
+        return repository.findByDoctorId(id_doc);
     }
 
-    public List<Appointment> getByPatientId(Long patientId) {
-        return repository.findByPatientId(patientId);
+    //@Cacheable(value = "appointmentsByPaciente", key = "#id_pac")
+    public List<Appointment> getByPatientId(Long id_pac) {
+        return repository.findByPatientId(id_pac);
     }
 
     @Override

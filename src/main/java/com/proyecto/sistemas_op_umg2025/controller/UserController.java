@@ -3,7 +3,6 @@ package com.proyecto.sistemas_op_umg2025.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +25,9 @@ import com.proyecto.sistemas_op_umg2025.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/proyecto/")
 @SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
-
 public class UserController {
 
     private final UserService service;

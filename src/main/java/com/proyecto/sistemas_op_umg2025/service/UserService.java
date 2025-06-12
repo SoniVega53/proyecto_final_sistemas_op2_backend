@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.sistemas_op_umg2025.model.RoleUser;
@@ -35,10 +36,12 @@ public class UserService implements ServiceCRUD<User> {
     }
 
     @Override
+    
     public List<User> getDataList() {
         return (List<User>) repository.findAll();
     }
 
+    @Cacheable(value = "usuariosSeeAll")
     @Override
     public User getFindUncle(Long value) {
         Optional<User> res = repository.findById(value);

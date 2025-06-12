@@ -4,7 +4,6 @@ package com.proyecto.sistemas_op_umg2025.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import com.proyecto.sistemas_op_umg2025.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/proyecto/")
 @RequiredArgsConstructor
 public class DoctorController {
