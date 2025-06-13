@@ -43,18 +43,31 @@ public class UserController {
     public ResponseEntity<BaseResponse> deleteUsuario(@PathVariable Long id) {
         try {
             User find = service.getFindUncle(id);
+
             if (find != null) {
+                Doctor findDoc = serviceDoc.getFindUncleUser(find);
+                if (findDoc != null) {
+                    serviceDoc.deleteFind(findDoc);
+
+                }
+                Patient findPatient = servicePati.getFindUncleUser(find);
+                if (findPatient != null) {
+                    servicePati.deleteFind(findPatient);
+
+                }
                 service.deleteFind(find);
                 return ResponseEntity.ok(BaseResponse.builder().code("200").message("Se elimino Correctamente")
                         .entity(find).build());
             }
             return ResponseEntity.ok(
-                    BaseResponse.builder().code("400").message("Usuario no Existe o Contraseña es invalida").build());
+                    BaseResponse.builder().code("400").message("Usuario no Existe")
+                            .entity(find).build());
+
         } catch (Exception e) {
 
             return ResponseEntity.ok(
                     BaseResponse.builder().code("400")
-                            .message("Surgio Algo Inesperado, Revise que no tenga articulos creados").build());
+                            .message("Surgio Algo Inesperado, Revise que no tenga citas creadas").build());
         }
     }
 
@@ -129,6 +142,32 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.ok(
                     BaseResponse.builder().code("400").message("Usuario no Existe o Contraseña es invalida").build());
+
+        }
+    }
+
+    @GetMapping("user/usuario/{id}")
+    public ResponseEntity<BaseResponse> obtenerUsuarioId(@PathVariable Long id) {
+        try {
+            User find = service.getFindUncle(id);
+            if (find != null) {
+                Doctor findDoc = serviceDoc.getFindUncleUser(find);
+                if (findDoc != null) {
+                    find.setDoctor(findDoc);
+                }
+                Patient findPatient = servicePati.getFindUncleUser(find);
+                if (findPatient != null) {
+                    find.setPaciente(findPatient);
+                }
+                return ResponseEntity.ok(BaseResponse.builder().code("200").message("Usuario Obtenido exitosamente")
+                        .entity(find).build());
+            }
+            return ResponseEntity.ok(
+                    BaseResponse.builder().code("400").message("Usuario no Existe")
+                            .entity(find).build());
+        } catch (Exception e) {
+            return ResponseEntity.ok(
+                    BaseResponse.builder().code("400").message("Usuario no Existe").entity(e).build());
 
         }
     }

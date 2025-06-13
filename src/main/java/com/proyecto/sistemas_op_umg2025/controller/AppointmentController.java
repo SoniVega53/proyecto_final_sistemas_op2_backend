@@ -65,7 +65,7 @@ public class AppointmentController {
         } catch (Exception e) {
             return ResponseEntity.ok(BaseResponse.builder()
                     .code("400")
-                    .message("Error inesperado al eliminar cita")
+                    .message("Error inesperado al eliminar cita, Revise que no tenga Recetas Creadas")
                     .build());
         }
     }

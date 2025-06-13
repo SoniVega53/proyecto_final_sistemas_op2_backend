@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.sistemas_op_umg2025.model.entity.Doctor;
+import com.proyecto.sistemas_op_umg2025.model.entity.User;
 import com.proyecto.sistemas_op_umg2025.model.repository.DoctorRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,10 @@ public class DoctorService implements ServiceCRUD<Doctor> {
 
     public Doctor getFindByName(String name) {
         return repository.findByName(name).orElseThrow();
+    }
+
+    public Doctor getFindUncleUser(User value) {
+        return repository.findByUser(value);
     }
 
     @Override
