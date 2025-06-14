@@ -1,5 +1,6 @@
 package com.proyecto.sistemas_op_umg2025.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController {
 
     private final UserService service;
+    @Value("${APP_NAME}")
+    private String appName;
 
     @PostMapping("register")
     public ResponseEntity<BaseResponse> register(@RequestBody RegisterRequest entity) {
@@ -65,7 +68,7 @@ public class AuthenticationController {
 
     @GetMapping("usuario")
     public String usuarioUMG() {
-        return "Soni Vega | 3190 22 9368";
+        return appName;
     }
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {
