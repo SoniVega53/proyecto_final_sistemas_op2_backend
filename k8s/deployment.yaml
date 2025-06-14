@@ -16,11 +16,5 @@ spec:
       - name: springboot
         image: gcr.io/cluster-proyecto-op2/springboot-app
         imagePullPolicy: IfNotPresent
-        env:
-            - name: APP_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: app_name
         ports:
         - containerPort: 9090
