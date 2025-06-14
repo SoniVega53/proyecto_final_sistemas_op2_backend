@@ -36,16 +36,13 @@ public class UserService implements ServiceCRUD<User> {
     }
 
     @Override
-    
     public List<User> getDataList() {
         return (List<User>) repository.findAll();
     }
 
-    @Cacheable(value = "usuariosSeeAll")
     @Override
     public User getFindUncle(Long value) {
-        Optional<User> res = repository.findById(value);
-        return res.isPresent() ? res.get() : null;
+        return repository.findById(value).orElse(null);
     }
 
     public User getFindUncleUsername(String value) {
