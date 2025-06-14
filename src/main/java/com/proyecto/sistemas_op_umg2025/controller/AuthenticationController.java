@@ -1,6 +1,7 @@
 package com.proyecto.sistemas_op_umg2025.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,10 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("usuario")
+    public String usuarioUMG() {
+        return "Soni Vega | 3190 22 9368";
+    }
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         try {
